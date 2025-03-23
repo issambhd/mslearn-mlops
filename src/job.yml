@@ -10,10 +10,10 @@ inputs:
     path: azureml:diabetes-dev-folder@latest
   reg_rate: 0.01
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-compute: ci001
-experiment_name: experiment-from-mslearn-mlops-challenge1 
+compute: ci-mslearn-mlops
+experiment_name: experiment-from-mslearn-mlops
 description: | 
-  # My Azure Ml job for the Challenge 1
+  # My Azure Ml job for the Challenge 3
   This is my mlops job Challenge 1 running in the cloud via Azure ML!
   ## Description 
-  mslearn-mlops Challenge 1 Create an Azure Machine Learning job
+  mslearn-mlops Challenge 3 Create an Azure Machine Learning job
