@@ -1,4 +1,4 @@
-name: Placeholder
+name: GitHub Actions workflow triggered by the creation of a pull request
 
 on:
   pull_request:
