@@ -1,0 +1,8 @@
+name : Placeholder
+
+on:
+  push:
+    branches:
+      - main
+    run: |
+        echo "Will add code checks here in next challenge"
