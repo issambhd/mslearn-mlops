@@ -2,7 +2,6 @@ name: GitHub Actions workflow triggered by the creation of a pull request + lint
 
 on:
   pull_request:
-  merge_group:
     branches:
       - main
 
