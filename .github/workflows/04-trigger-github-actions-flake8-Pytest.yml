@@ -6,8 +6,8 @@ on:
       - main
 
 jobs:
-  build:
-    name: linting flake8 + Pytest
+  job1:
+    name: linting flake8
     runs-on: ubuntu-latest
 
     steps:
@@ -27,6 +27,20 @@ jobs:
       - name: Run linting tests
         run: |
           flake8 src/model/
+
+  job2:
+    name: Running Pytest
+    runs-on: ubuntu-latest
+
+    steps:
+    
+      - name: Check out repo
+        uses: actions/checkout@main
+        
+      - name: Use Pyhton version 3.8
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.8'
           
       - name: Install dependencies from requirements.txt
         run: |
@@ -35,5 +49,4 @@ jobs:
       - name: Run Pytest
         run: |
           pytest tests/
-
   
