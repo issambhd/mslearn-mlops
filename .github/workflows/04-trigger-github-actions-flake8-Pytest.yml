@@ -1,0 +1,39 @@
+name: GitHub Actions workflow triggered by the creation of a pull request + linting + Flake8
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: linting flake8 + Pytest
+    runs-on: ubuntu-latest
+
+    steps:
+    
+      - name: Check out repo
+        uses: actions/checkout@main
+        
+      - name: Use Pyhton version 3.8
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.8'
+          
+      - name: Install Flake8
+        run: |
+          python -m pip install flake8
+          
+      - name: Run linting tests
+        run: |
+          flake8 src/model/
+          
+      - name: Install dependencies from requirements.txt
+        run: |
+          python -m pip install -r requirements.txt
+
+      - name: Run Pytest
+        run: |
+          pytest tests/
+
+  
