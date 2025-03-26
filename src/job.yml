@@ -6,14 +6,14 @@ command: >-
   --reg_rate ${{inputs.reg_rate}}
 inputs:
   training_data: 
-    type: uri_folder 
-    path: ${{secrets.DATASET_NAME}}
+    type: uri_folder
+    default: ""
   reg_rate: 0.001
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
-compute: ${{secrets.COMPUTE_NAME}}
+compute: ""
 experiment_name: experiment-from-mslearn-mlops
 description: | 
-  # My Azure Ml job for the Challenge 3
-  This is my mlops job Challenge 1 running in the cloud via Azure ML!
+  # My Azure Ml job for the Challenge 5
+  This is my mlops job Challenge 5 running in the cloud via Azure ML!
   ## Description 
-  mslearn-mlops Challenge 3 Create an Azure Machine Learning job
+  mslearn-mlops Challenge 5 Trigger an Azure Machine Learning job in different env
