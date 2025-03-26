@@ -29,7 +29,7 @@ jobs:
       
     - name: Trigger Azure Machine Learning job
       run: |
-       az ml job create --file src/job.yml --resource-group rg-for-mslearn-mlops --workspace-name ws-mslearn-mlops-dev --stream
+       az ml job create --file src/job.yml --resource-group rg-for-mslearn-mlops --workspace-name ${{ secrets.WORKSPACE_NAME }} --stream
 
   job2:
     name:  train the model in the prod environment, using the diabetes-prod-folder data asset as input
@@ -55,4 +55,4 @@ jobs:
       
     - name: Trigger Azure Machine Learning job
       run: |
-       az ml job create --file src/job.yml --resource-group rg-for-mslearn-mlops --workspace-name ws-mslearn-mlops-prod --stream
+       az ml job create --file src/job.yml --resource-group rg-for-mslearn-mlops --workspace-name ${{ secrets.WORKSPACE_NAME }} --stream
