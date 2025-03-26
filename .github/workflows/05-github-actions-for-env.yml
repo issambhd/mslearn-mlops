@@ -26,10 +26,9 @@ jobs:
       
     - name: Trigger Azure Machine Learning job
       run: |
-       az ml job create --file src/job.yml \
+       az ml job create --file src/job-dev.yml \
                         --resource-group rg-for-mslearn-mlops \
                         --workspace-name ${{ secrets.WORKSPACE_NAME }} \
-                        --set inputs.training_data=${{ secrets.DATASET_NAME }} \
                         --set compute=${{ secrets.COMPUTE_NAME }} \
                         --stream
 
@@ -57,9 +56,8 @@ jobs:
       
     - name: Trigger Azure Machine Learning job
       run: |
-        az ml job create --file src/job.yml \
+        az ml job create --file src/job-prod.yml \
                          --resource-group rg-for-mslearn-mlops \
                          --workspace-name ${{ secrets.WORKSPACE_NAME }} \
-                         --set inputs.training_data=${{ secrets.DATASET_NAME }} \
                          --set compute=${{ secrets.COMPUTE_NAME }} \
                          --stream
