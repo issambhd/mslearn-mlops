@@ -1,4 +1,4 @@
-oiname: Deploy Model to Endpoint
+name: Deploy Model to Endpoint
 
 on:
   push:
