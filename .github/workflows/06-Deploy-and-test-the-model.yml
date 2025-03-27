@@ -59,7 +59,7 @@ jobs:
           az ml online-deployment create \
             --name $deployment_name \
             --endpoint-name $endpoint_name \
-            -f endpoints/online/deployment.yaml \
+            -f endpoints/online/deployment.yml \
             --resource-group $resource_group \
             --workspace-name $workspace_name \
             --all-traffic
