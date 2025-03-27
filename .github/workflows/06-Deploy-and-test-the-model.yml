@@ -48,19 +48,20 @@ jobs:
           model_version="1"
 
           # Check if endpoint exists and create or update accordingly
-          #if az ml online-endpoint show --name $endpoint_name --resource-group $resource_group --workspace-name $workspace_name; then
-          #az ml online-endpoint update --name $endpoint_name -f endpoints/online/endpoint.yml --resource-group $resource_group --workspace-name $workspace_name
-          #else
-          #az ml online-endpoint create --name $endpoint_name -f endpoints/online/endpoint.yml --resource-group $resource_group --workspace-name $workspace_name
-          #fi
+          if az ml online-endpoint show --name $endpoint_name --resource-group $resource_group --workspace-name $workspace_name; then
+            az ml online-endpoint update --name $endpoint_name -f endpoints/online/endpoint.yml --resource-group $resource_group --workspace-name $workspace_name
+          else
+            az ml online-endpoint create --name $endpoint_name -f endpoints/online/endpoint.yml --resource-group $resource_group --workspace-name $workspace_name
+          fi
+
 
           # Deploy the model to the endpoint
           az ml model deploy \
-            -- name $endpoint_name \
+            --name $endpoint_name \
             --model $model_name:$model_version \
             --resource-group $resource_group \
             --workspace-name $workspace_name \
-            --endpoint $endpoint_name || { echo 'Deployment failed'; exit 1; }
+            --endpoint-name $endpoint_name || { echo 'Deployment failed'; exit 1; }
 
           # Invoke the endpoint to validate deployment
           az ml online-endpoint invoke --name $endpoint_name --request-file endpoints/online/sample-request.json || { echo 'Endpoint invocation failed'; exit 1; }
