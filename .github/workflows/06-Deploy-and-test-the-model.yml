@@ -1,0 +1,41 @@
+name: Deploy Model to Endpoint
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-model:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the repository
+      - name: Checkout Repository
+        uses: actions/checkout@main
+
+      # Step 2: Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      # Step 3: Install Azure ML CLI
+      - name: Install Azure CLI and ML extension
+        run: |
+          pip install azure-ai-ml azure-identity
+
+      # Step 4: Deploy Model to Endpoint
+      - name: Deploy Model
+        run: |
+          # Set variables
+          endpoint_name="mslearn-mlops-my-online-endpoint"
+          model_name="model-from-job-output-manually-registered"
+
+          # Create or update an endpoint
+          az ml online-endpoint create --name $endpoint_name -f endpoint.yml || true
+
+          # Deploy the latest model version to the endpoint
+          az ml online-deployment create --name blue --endpoint $endpoint_name \
+            --model $model_name:latest --instance-type Standard_DS3_v2 --scale-settings-scale-type manual --instance-count 1 \
+            --environment azureml:<your_environment> --all-traffic --overwrite
