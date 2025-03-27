@@ -1,4 +1,4 @@
-name: Deploy Model to Endpoint
+ename: Deploy Model to Endpoint
 
 on:
   push:
@@ -55,14 +55,12 @@ jobs:
             az ml online-endpoint create --name $endpoint_name -f endpoints/online/endpoint.yml --resource-group $resource_group --workspace-name $workspace_name
           fi
 
-
-          # Deploy the model to the endpoint
+          # Create the deployment
           az ml online-deployment create \
-            --name $deployment_name \
+            --name $deployment_name 
             --endpoint-name $endpoint_name \
-            --model $model_name:$model_version \
-            --resource-group $resource_group \
-            --workspace-name $workspace_name || { echo 'Deployment failed'; exit 1; }
+            -f endpoints/online/deployment.yaml \
+            --all-traffic
 
           # Invoke the endpoint to validate deployment
           az ml online-endpoint invoke --name $endpoint_name --request-file endpoints/online/sample-request.json || { echo 'Endpoint invocation failed'; exit 1; }
