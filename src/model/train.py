@@ -28,8 +28,8 @@ def main(args):
 
 
 def get_csvs_df(path):
-    import os
-    print(f"Resolved training data path: {path}") # Log the path for debugging
+    # Log the path for debugging
+    print(f"Resolved training data path: {path}")
     if not os.path.exists(path):
         raise RuntimeError(f"Cannot use non-existent path provided: {path}")
     csv_files = glob.glob(f"{path}/*.csv")
