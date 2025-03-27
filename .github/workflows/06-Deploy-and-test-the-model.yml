@@ -1,4 +1,4 @@
-name: Deploy Model to Endpoint
+oiname: Deploy Model to Endpoint
 
 on:
   push:
@@ -33,9 +33,14 @@ jobs:
           model_name="model-from-job-output-manually-registered"
 
           # Create or update an endpoint
-          az ml online-endpoint create --name $endpoint_name -f endpoint.yml || true
+          az ml online-endpoint create --name $endpoint_name -f endpoints/online/endpoint.yml || true
 
           # Deploy the latest model version to the endpoint
-          az ml online-deployment create --name blue --endpoint $endpoint_name \
-            --model $model_name:latest --instance-type Standard_DS3_v2 --scale-settings-scale-type manual --instance-count 1 \
-            --environment azureml:<your_environment> --all-traffic --overwrite
+          az ml online-deployment create --name mslearn-mlops-my-deployment --endpoint $endpoint_name \
+            -f endpoints/online/deployment.yml \
+            --all-traffic
+
+      # Step 5: Invoke the Endpoint
+      - name: Invoke the Endpoint
+        run: |
+          az ml online-endpoint invoke --name $endpoint_name --request-file endpoints/online/sample-request.json
