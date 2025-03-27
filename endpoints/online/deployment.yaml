@@ -1,0 +1,9 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: mslearn-mlops-my-deployment
+endpoint_name: mslearn-mlops-my-online-endpoint
+model:
+  type: mlflow_model
+  name: model-from-job-output-manually-registered
+  version: 1
+instance_type: Standard_DS3_v2
+instance_count: 1
