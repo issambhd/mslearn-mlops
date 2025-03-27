@@ -3,9 +3,6 @@ name: mslearn-mlops-my-deployment
 endpoint_name: mslearn-mlops-my-online-endpoint
 model:
   type: mlflow_model
-  path: azureml://subscriptions/c27de983-f245-4843-96f3-7d98d93f46d4/resourceGroups/rg-for-mslearn-mlops/providers/Microsoft.MachineLearningServices/workspaces/ws2-mslearn-mlops-prod/models/model-from-job-output-manually-registered/versions/1
+  path: azureml:model-from-job-output-manually-registered:1
 instance_type: Standard_DS3_v2
 instance_count: 1
-
-
-
