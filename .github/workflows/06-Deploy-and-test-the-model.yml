@@ -42,8 +42,12 @@ jobs:
           endpoint_name="mslearn-mlops-my-online-endpoint"
           model_name="model-from-job-output-manually-registered"
 
-          # Create or update an endpoint
-          az ml online-endpoint create --name $endpoint_name -f endpoints/online/endpoint.yml --resource-group $resource_group --workspace-name $workspace_name || true
+          # Check if endpoint exists and create or update accordingly
+          if az ml online-endpoint show --name $endpoint_name --resource-group $resource_group --workspace-name $workspace_name; then
+            az ml online-endpoint update --name $endpoint_name -f endpoints/online/endpoint.yml --resource-group $resource_group --workspace-name $workspace_name
+          else
+            az ml online-endpoint create --name $endpoint_name -f endpoints/online/endpoint.yml --resource-group $resource_group --workspace-name $workspace_name
+          fi
 
           # Deploy the latest model version to the endpoint
           az ml online-deployment create --name mslearn-mlops-my-deployment --endpoint $endpoint_name \
@@ -52,7 +56,7 @@ jobs:
             --resource-group $resource_group \
             --workspace-name $workspace_name
 
-      # Step 5: Invoke the Endpoint
+      # Step 6: Invoke the Endpoint
       - name: Invoke the Endpoint
         run: |
           az ml online-endpoint invoke --name $endpoint_name --request-file endpoints/online/sample-request.json
