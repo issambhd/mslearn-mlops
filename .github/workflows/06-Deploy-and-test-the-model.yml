@@ -44,6 +44,7 @@ jobs:
           resource_group="rg-for-mslearn-mlops"
           workspace_name="ws2-mslearn-mlops-prod" 
           endpoint_name="mslearn-mlops-my-online-endpoint"
+          deployment_name="mslearn-mlops-my-deployment"
           model_name="model-from-job-output-manually-registered"
           model_version="1"
 
@@ -56,12 +57,12 @@ jobs:
 
 
           # Deploy the model to the endpoint
-          az ml model deploy \
-            --name $endpoint_name \
+          az ml online-deployment create \
+            --name $deployment_name \
+            --endpoint-name $endpoint_name \
             --model $model_name:$model_version \
             --resource-group $resource_group \
-            --workspace-name $workspace_name \
-            --endpoint-name $endpoint_name || { echo 'Deployment failed'; exit 1; }
+            --workspace-name $workspace_name || { echo 'Deployment failed'; exit 1; }
 
           # Invoke the endpoint to validate deployment
           az ml online-endpoint invoke --name $endpoint_name --request-file endpoints/online/sample-request.json || { echo 'Endpoint invocation failed'; exit 1; }
