@@ -55,6 +55,10 @@ jobs:
             az ml online-endpoint create --name $endpoint_name -f endpoints/online/endpoint.yml --resource-group $resource_group --workspace-name $workspace_name
           fi
 
+          # Log model details
+          echo "Model details:"
+          az ml model show --name $model_name --version $model_version --resource-group $resource_group --workspace-name $workspace_name
+          
           # Create the deployment
           echo "Creating deployment..."
           az ml online-deployment create \
