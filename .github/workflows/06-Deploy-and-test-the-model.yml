@@ -8,6 +8,8 @@ on:
 jobs:
   deploy-model:
     runs-on: ubuntu-latest
+    environment:
+      name: prod_env
 
     steps:
       # Step 1: Check out the repository
