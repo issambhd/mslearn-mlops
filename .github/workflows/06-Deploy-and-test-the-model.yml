@@ -56,6 +56,7 @@ jobs:
           fi
 
           # Create the deployment
+          echo "Creating deployment..."
           az ml online-deployment create \
             --name $deployment_name \
             --endpoint-name $endpoint_name \
@@ -65,6 +66,7 @@ jobs:
             --all-traffic
 
           # Invoke the endpoint to validate deployment
+          echo "Invoking the endpoint..."
           az ml online-endpoint invoke \
             --name $endpoint_name \
             --resource-group $resource_group \
