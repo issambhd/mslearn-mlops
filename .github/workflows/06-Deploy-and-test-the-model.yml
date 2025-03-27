@@ -65,4 +65,8 @@ jobs:
             --all-traffic
 
           # Invoke the endpoint to validate deployment
-          az ml online-endpoint invoke --name $endpoint_name --request-file endpoints/online/sample-request.json || { echo 'Endpoint invocation failed'; exit 1; }
+          az ml online-endpoint invoke \
+            --name $endpoint_name \
+            --resource-group $resource_group \
+            --workspace-name $workspace_name \
+            --request-file endpoints/online/sample-request.json || { echo 'Endpoint invocation failed'; exit 1; }
