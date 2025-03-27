@@ -5,5 +5,5 @@ model:
   name: model-from-job-output-manually-registered
   version: 1
   type: mlflow_model
-instance_type: Standard_DS3_v2
-instance_count: 1
+instance_type: Standard_D2as_v4
+instance_count: 3
