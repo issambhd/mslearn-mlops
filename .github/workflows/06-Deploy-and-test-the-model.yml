@@ -38,7 +38,7 @@ jobs:
           creds: ${{secrets.AZURE_CREDENTIALS}}
 
       # Step 6: Deploy Model to Endpoint
-      - name: Deploy the Model and Invoke the endpoint
+      - name: Deploy Model and Invoke Endpoint
         run: |
           # Set variables
           resource_group="rg-for-mslearn-mlops"
@@ -48,17 +48,17 @@ jobs:
 
           # Check if endpoint exists and create or update accordingly
           if az ml online-endpoint show --name $endpoint_name --resource-group $resource_group --workspace-name $workspace_name; then
-            az ml online-endpoint update --name $endpoint_name -f endpoints/online/endpoint.yml --resource-group $resource_group --workspace-name $workspace_name
+          az ml online-endpoint update --name $endpoint_name -f endpoints/online/endpoint.yml --resource-group $resource_group --workspace-name $workspace_name
           else
-            az ml online-endpoint create --name $endpoint_name -f endpoints/online/endpoint.yml --resource-group $resource_group --workspace-name $workspace_name
+          az ml online-endpoint create --name $endpoint_name -f endpoints/online/endpoint.yml --resource-group $resource_group --workspace-name $workspace_name
           fi
 
           # Deploy the latest model version to the endpoint
           az ml online-deployment create --name mslearn-mlops-my-deployment --endpoint $endpoint_name \
-            -f endpoints/online/deployment.yml \
-            --all-traffic \
-            --resource-group $resource_group \
-            --workspace-name $workspace_name
+          -f endpoints/online/deployment.yml \
+          --all-traffic \
+          --resource-group $resource_group \
+          --workspace-name $workspace_name || { echo 'Deployment failed'; exit 1; }
 
           # Invoke the Endpoint
-          az ml online-endpoint invoke --name $endpoint_name --request-file endpoints/online/sample-request.json
+          az ml online-endpoint invoke --name $endpoint_name --request-file endpoints/online/sample-request.json || { echo 'Endpoint invocation failed'; exit 1; }
