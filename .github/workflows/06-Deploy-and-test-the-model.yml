@@ -60,6 +60,8 @@ jobs:
             --name $deployment_name 
             --endpoint-name $endpoint_name \
             -f endpoints/online/deployment.yaml \
+            --resource-group $resource_group \
+            --workspace-name $workspace_name \
             --all-traffic
 
           # Invoke the endpoint to validate deployment
