@@ -69,6 +69,14 @@ jobs:
             --workspace-name $workspace_name \
             --all-traffic
 
+          # Verify the deployment
+          echo "Verifying the deployment..."
+          az ml online-deployment show \
+            --name $deployment_name \
+            --endpoint-name $endpoint_name \
+            --resource-group $resource_group \
+            --workspace-name $workspace_name
+
           # Invoke the endpoint to validate deployment
           echo "Invoking the endpoint..."
           az ml online-endpoint invoke \
