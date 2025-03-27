@@ -23,18 +23,22 @@ jobs:
           python-version: '3.8'
 
       # Step 3: Install Azure ML CLI
-      - name: Install Azure CLI and ML extension
+      - name: Install Azure CLI Python packages
         run: |
           pip install azure-ai-ml azure-identity
 
-      # Step 4: Azure login
+      # Step 4: Install the Azure ML CLI extension
+      - name: Install az ml extension
+        run: az extension add -n ml -y
+
+      # Step 5: Azure login
       - name: Azure login
         uses: azure/login@v1
         with:
           creds: ${{secrets.AZURE_CREDENTIALS}}
 
-      # Step 5: Deploy Model to Endpoint
-      - name: Deploy Model
+      # Step 6: Deploy Model to Endpoint
+      - name: Deploy the Model and Invoke the endpoint
         run: |
           # Set variables
           resource_group="rg-for-mslearn-mlops"
@@ -56,7 +60,5 @@ jobs:
             --resource-group $resource_group \
             --workspace-name $workspace_name
 
-      # Step 6: Invoke the Endpoint
-      - name: Invoke the Endpoint
-        run: |
+          # Invoke the Endpoint
           az ml online-endpoint invoke --name $endpoint_name --request-file endpoints/online/sample-request.json
