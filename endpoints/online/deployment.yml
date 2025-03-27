@@ -4,5 +4,6 @@ endpoint_name: mslearn-mlops-my-online-endpoint
 model:
   type: mlflow_model
   path: azureml://model-from-job-output-manually-registered:1
+compute: ws2-mslearn-mlops-prod
 instance_type: Standard_DS3_v2
 instance_count: 1
