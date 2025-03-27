@@ -25,7 +25,13 @@ jobs:
         run: |
           pip install azure-ai-ml azure-identity
 
-      # Step 4: Deploy Model to Endpoint
+      # Step 4: Azure login
+      - name: Azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.AZURE_CREDENTIALS}}
+
+      # Step 5: Deploy Model to Endpoint
       - name: Deploy Model
         run: |
           # Set variables
