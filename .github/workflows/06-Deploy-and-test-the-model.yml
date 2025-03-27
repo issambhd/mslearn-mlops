@@ -14,13 +14,22 @@ jobs:
     steps:
       # Step 1: Check out the repository
       - name: Checkout Repository
-        uses: actions/checkout@main
+        uses: actions/checkout@v2 # Pin to v2 for stability
 
       # Step 2: Set up Python
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.8'
+
+      # Cache dependencies
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
 
       # Step 3: Install Azure ML CLI
       - name: Install Azure CLI Python packages
@@ -35,7 +44,7 @@ jobs:
       - name: Azure login
         uses: azure/login@v1
         with:
-          creds: ${{secrets.AZURE_CREDENTIALS}}
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       # Step 6: Deploy Model to Endpoint
       - name: Deploy Model to Endpoint
@@ -57,7 +66,7 @@ jobs:
 
           # Create the deployment
           az ml online-deployment create \
-            --name $deployment_name 
+            --name $deployment_name \
             --endpoint-name $endpoint_name \
             -f endpoints/online/deployment.yaml \
             --resource-group $resource_group \
