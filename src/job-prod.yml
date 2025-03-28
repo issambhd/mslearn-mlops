@@ -9,11 +9,11 @@ inputs:
     type: uri_folder
     path: azureml:diabetes-prod-folder@latest
   reg_rate: 0.01
-environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+environment: azureml:AzureML-ACPT-pytorch-1.13-py38-cuda11.7-gpu@latest
 compute: ""
 experiment_name: experiment-from-mslearn-mlops
 description: | 
-  # My Azure Ml job for the Challenge 5
-  This is my mlops job Challenge 5 running in the cloud via Azure ML!
+  # Azure ML job (PROD)
+  This job is my mlops job running in the cloud via Azure ML for the mslearn-mlops challenges (5 & 6) 
   ## Description 
-  mslearn-mlops Challenge 5 Trigger an Azure Machine Learning job in different env
+  Trigger an Azure Machine Learning job in prod env
