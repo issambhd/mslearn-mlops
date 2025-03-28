@@ -28,10 +28,10 @@ jobs:
       - name: Create a managed online endpoint
         run: |
           # Check if endpoint exists and create or update accordingly
-          if az ml online-endpoint show --name mslearn-mlops-my-online-endpoint --resource-group $resource_group --workspace-name $workspace_name; then
-            az ml online-endpoint update --name mslearn-mlops-my-online-endpoint -f endpoints/online/endpoint.yml --resource-group $resource_group --workspace-name $workspace_name
+          if az ml online-endpoint show --name mslearn-mlops-my-online-endpoint --resource-group rg-for-mslearn-mlops --workspace-name ws2-mslearn-mlops-prod; then
+            az ml online-endpoint update --name mslearn-mlops-my-online-endpoint -f endpoints/online/endpoint.yml --resource-group rg-for-mslearn-mlops --workspace-name ws2-mslearn-mlops-prod
           else
-            az ml online-endpoint create --name mslearn-mlops-my-online-endpoint -f endpoints/online/endpoint.yml --resource-group $resource_group --workspace-name $workspace_name
+            az ml online-endpoint create --name mslearn-mlops-my-online-endpoint -f endpoints/online/endpoint.yml --resource-group rg-for-mslearn-mlops --workspace-name ws2-mslearn-mlops-prod
           fi
 
           # Endpoint details
