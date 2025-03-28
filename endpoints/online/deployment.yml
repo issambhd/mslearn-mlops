@@ -6,5 +6,5 @@ model:
   version: 1
   path: azureml://subscriptions/${{ secrets.SUBSCRIPION_ID }}/resourceGroups/${{ secrets.RESOURCE_GROUP }}/workspaces/${{ secrets.WORKSPACE_NAME }}/datastores/workspaceartifactstore/paths/ExperimentRun/dcid.shy_lion_7fz97zntk2/model
   type: mlflow_model
-instance_type: Standard_D16as_v4
+instance_type: Standard_D2as_v4
 instance_count: 1
