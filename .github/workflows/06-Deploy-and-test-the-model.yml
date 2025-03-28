@@ -57,7 +57,12 @@ jobs:
 
           # Log model details
           echo "Model details:"
-          az ml model show --name $model_name --version $model_version --resource-group $resource_group --workspace-name $workspace_name
+          #az ml model show --name $model_name --version $model_version --resource-group $resource_group --workspace-name $workspace_name
+          az ml model show --name model-from-job-output-manually-registered --version 1 --resource-group rg-for-mslearn-mlops --workspace-name ws2-mslearn-mlops-prod
+
+          # Endpoint details
+          echo "Endpoint details:"
+          az ml online-endpoint show --name mslearn-mlops-my-online-endpoint --resource-group rg-for-mslearn-mlops --workspace-name ws2-mslearn-mlops-prod
           
           # Create the deployment
           echo "Creating deployment..."
