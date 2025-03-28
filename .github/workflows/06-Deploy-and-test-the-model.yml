@@ -15,10 +15,10 @@ jobs:
         uses: actions/checkout@main
 
       # Step 2: Install the desired Python version
-      - name: Set up Python 3.8
+      - name: Set up Python 3.7.16
         uses: actions/setup-python@v2
         with:
-          python-version: '3.8'
+          python-version: '3.7.16'
 
       # Step 3: Install the Azure ML CLI extension
       - name: Install az ml extension
