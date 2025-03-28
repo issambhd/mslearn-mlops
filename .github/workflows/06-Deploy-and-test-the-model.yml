@@ -59,7 +59,7 @@ jobs:
           echo "Verifying the deployment..."
           az ml online-deployment show \
             --name my-deployment \
-            --endpoint mslearn-mlops-my-online-endpointe \
+            --endpoint my-endpoint-mlopsibe \
             --resource-group ${{ secrets.RESOURCE_GROUP }} \
             --workspace-name ${{ secrets.WORKSPACE_NAME }}
 
