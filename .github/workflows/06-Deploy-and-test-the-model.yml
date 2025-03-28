@@ -29,8 +29,10 @@ jobs:
         run: |
           # Check if endpoint exists and create or update accordingly
           if az ml online-endpoint show --name my-endpoint-mlopsibe --resource-group ${{ secrets.RESOURCE_GROUP }} --workspace-name ${{ secrets.WORKSPACE_NAME }}; then
+            echo "Updating existing endpoint..."
             az ml online-endpoint update --name my-endpoint-mlopsibe -f endpoints/online/endpoint.yml --resource-group ${{ secrets.RESOURCE_GROUP }} --workspace-name ${{ secrets.WORKSPACE_NAME }}
           else
+            echo "Creating new endpoint..."
             az ml online-endpoint create --name my-endpoint-mlopsibe -f endpoints/online/endpoint.yml --resource-group ${{ secrets.RESOURCE_GROUP }} --workspace-name ${{ secrets.WORKSPACE_NAME }}
           fi
 
@@ -45,15 +47,25 @@ jobs:
           echo "Model details:"
           az ml model show --name model-registered --version 1 --resource-group ${{ secrets.RESOURCE_GROUP }} --workspace-name ${{ secrets.WORKSPACE_NAME }}
 
-          # Create the deployment
-          echo "Creating deployment..."
-          az ml online-deployment create \
-            --name my-deployment \
-            --endpoint my-endpoint-mlopsibe \
-            -f endpoints/online/deployment.yml \
-            --resource-group ${{ secrets.RESOURCE_GROUP }} \
-            --workspace-name ${{ secrets.WORKSPACE_NAME }} \
-            --all-traffic
+          # Check if deployment exists and create or update accordingly
+          if az ml online-deployment show --name my-deployment --endpoint my-endpoint-mlopsibe --resource-group ${{ secrets.RESOURCE_GROUP }} --workspace-name ${{ secrets.WORKSPACE_NAME }}; then
+            echo "Updating existing deployment..."
+            az ml online-deployment update \
+              --name my-deployment \
+              --endpoint my-endpoint-mlopsibe \
+              -f endpoints/online/deployment.yml \
+              --resource-group ${{ secrets.RESOURCE_GROUP }} \
+              --workspace-name ${{ secrets.WORKSPACE_NAME }}
+          else
+            echo "Creating new deployment..."
+            az ml online-deployment create \
+              --name my-deployment \
+              --endpoint my-endpoint-mlopsibe \
+              -f endpoints/online/deployment.yml \
+              --resource-group ${{ secrets.RESOURCE_GROUP }} \
+              --workspace-name ${{ secrets.WORKSPACE_NAME }} \
+              --all-traffic
+          fi
 
           # Verify the deployment
           echo "Verifying the deployment..."
@@ -63,19 +75,7 @@ jobs:
             --resource-group ${{ secrets.RESOURCE_GROUP }} \
             --workspace-name ${{ secrets.WORKSPACE_NAME }}
 
-      # Step 6: Invoke the endpoint
-      - name: Invoke the endpoint
-        run: |
-          # Invoke the endpoint to validate deployment
-          echo "Invoking the endpoint..."
-          az ml online-endpoint invoke \
-            --name my-endpoint-mlopsibe \
-            --resource-group ${{ secrets.RESOURCE_GROUP }} \
-            --workspace-name ${{ secrets.WORKSPACE_NAME }} \
-            --request-file endpoints/online/sample-request.json || { echo 'Endpoint invocation failed'; exit 1; }
-
-
-      # Step 7: Invoke the endpoint for multiple examples
+      # Step 6: Invoke the endpoint for multiple examples
       - name: Invoke the endpoint for example 1
         run: |
           # Invoke the endpoint to validate deployment
