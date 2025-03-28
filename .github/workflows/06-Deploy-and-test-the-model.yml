@@ -28,15 +28,15 @@ jobs:
       - name: Create a managed online endpoint
         run: |
           # Check if endpoint exists and create or update accordingly
-          if az ml online-endpoint show --name my-endpoint --resource-group ${{ secrets.RESOURCE_GROUP }} --workspace-name ${{ secrets.WORKSPACE_NAME }}; then
-            az ml online-endpoint update --name my-endpoint -f endpoints/online/endpoint.yml --resource-group ${{ secrets.RESOURCE_GROUP }} --workspace-name ${{ secrets.WORKSPACE_NAME }}
+          if az ml online-endpoint show --name my-endpoint-mlopsibe --resource-group ${{ secrets.RESOURCE_GROUP }} --workspace-name ${{ secrets.WORKSPACE_NAME }}; then
+            az ml online-endpoint update --name my-endpoint-mlopsibe -f endpoints/online/endpoint.yml --resource-group ${{ secrets.RESOURCE_GROUP }} --workspace-name ${{ secrets.WORKSPACE_NAME }}
           else
-            az ml online-endpoint create --name my-endpoint -f endpoints/online/endpoint.yml --resource-group ${{ secrets.RESOURCE_GROUP }} --workspace-name ${{ secrets.WORKSPACE_NAME }}
+            az ml online-endpoint create --name my-endpoint-mlopsibe -f endpoints/online/endpoint.yml --resource-group ${{ secrets.RESOURCE_GROUP }} --workspace-name ${{ secrets.WORKSPACE_NAME }}
           fi
 
           # Endpoint details
           echo "Endpoint details:"
-          az ml online-endpoint show --name my-endpoint --resource-group ${{ secrets.RESOURCE_GROUP }} --workspace-name ${{ secrets.WORKSPACE_NAME }}
+          az ml online-endpoint show --name my-endpoint-mlopsibe --resource-group ${{ secrets.RESOURCE_GROUP }} --workspace-name ${{ secrets.WORKSPACE_NAME }}
 
       # Step 6: Create the deployment
       - name: Create the deployment
@@ -49,7 +49,7 @@ jobs:
           echo "Creating deployment..."
           az ml online-deployment create \
             --name my-deployment \
-            --endpoint my-endpoint \
+            --endpoint my-endpoint-mlopsibe \
             -f endpoints/online/deployment.yml \
             --resource-group ${{ secrets.RESOURCE_GROUP }} \
             --workspace-name ${{ secrets.WORKSPACE_NAME }} \
@@ -69,7 +69,7 @@ jobs:
           # Invoke the endpoint to validate deployment
           echo "Invoking the endpoint..."
           az ml online-endpoint invoke \
-            --name my-endpoint \
+            --name my-endpoint-mlopsibe \
             --resource-group ${{ secrets.RESOURCE_GROUP }} \
             --workspace-name ${{ secrets.WORKSPACE_NAME }} \
             --request-file endpoints/online/sample-request.json || { echo 'Endpoint invocation failed'; exit 1; }
