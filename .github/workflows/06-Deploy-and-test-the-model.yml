@@ -75,13 +75,27 @@ jobs:
             --resource-group ${{ secrets.RESOURCE_GROUP }} \
             --workspace-name ${{ secrets.WORKSPACE_NAME }}
 
+
       # Step 6: Invoke the endpoint for multiple examples
+      #- name:  Deployment Traffic Allocation configuration
+      #  run: |
+      #    # Check Deployment Traffic Allocation
+      #    az ml online-endpoint update-traffic \
+      #      --name my-endpoint-mlopsibe
+      #      --traffic my-deployment=100
+
+       #   # Verify Deployment Status:
+       #   az ml online-deployment show \
+       #     --name my-deployment
+       #     --endpoint my-endpoint-mlopsibe
+
       - name: Invoke the endpoint for example 1
         run: |
           # Invoke the endpoint to validate deployment
           echo "Invoking the endpoint..."
           az ml online-endpoint invoke \
             --name my-endpoint-mlopsibe \
+            --deployment-name my-deployment\
             --resource-group ${{ secrets.RESOURCE_GROUP }} \
             --workspace-name ${{ secrets.WORKSPACE_NAME }} \
             --request-file endpoints/online/sample-request-1.json || { echo 'Endpoint invocation failed'; exit 1; }
@@ -92,6 +106,7 @@ jobs:
           echo "Invoking the endpoint..."
           az ml online-endpoint invoke \
             --name my-endpoint-mlopsibe \
+            --deployment-name my-deployment\
             --resource-group ${{ secrets.RESOURCE_GROUP }} \
             --workspace-name ${{ secrets.WORKSPACE_NAME }} \
             --request-file endpoints/online/sample-request-2.json || { echo 'Endpoint invocation failed'; exit 1; }
@@ -102,6 +117,7 @@ jobs:
           echo "Invoking the endpoint..."
           az ml online-endpoint invoke \
             --name my-endpoint-mlopsibe \
+            --deployment-name my-deployment\
             --resource-group ${{ secrets.RESOURCE_GROUP }} \
             --workspace-name ${{ secrets.WORKSPACE_NAME }} \
             --request-file endpoints/online/sample-request-3.json || { echo 'Endpoint invocation failed'; exit 1; }
@@ -112,6 +128,7 @@ jobs:
           echo "Invoking the endpoint..."
           az ml online-endpoint invoke \
             --name my-endpoint-mlopsibe \
+            --deployment-name my-deployment\
             --resource-group ${{ secrets.RESOURCE_GROUP }} \
             --workspace-name ${{ secrets.WORKSPACE_NAME }} \
             --request-file endpoints/online/sample-request-4.json || { echo 'Endpoint invocation failed'; exit 1; }
