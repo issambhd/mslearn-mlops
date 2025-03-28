@@ -24,7 +24,7 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # Step 5: Create a managed online endpoint
+      # Step 4: Create a managed online endpoint
       - name: Create a managed online endpoint
         run: |
           # Check if endpoint exists and create or update accordingly
@@ -38,7 +38,7 @@ jobs:
           echo "Endpoint details:"
           az ml online-endpoint show --name my-endpoint-mlopsibe --resource-group ${{ secrets.RESOURCE_GROUP }} --workspace-name ${{ secrets.WORKSPACE_NAME }}
 
-      # Step 6: Create the deployment
+      # Step 5: Create the deployment
       - name: Create the deployment
         run: |
           # Log model details
@@ -63,7 +63,7 @@ jobs:
             --resource-group ${{ secrets.RESOURCE_GROUP }} \
             --workspace-name ${{ secrets.WORKSPACE_NAME }}
 
-      # Step 7: Invoke the endpoint
+      # Step 6: Invoke the endpoint
       - name: Invoke the endpoint
         run: |
           # Invoke the endpoint to validate deployment
@@ -75,7 +75,7 @@ jobs:
             --request-file endpoints/online/sample-request.json || { echo 'Endpoint invocation failed'; exit 1; }
 
 
-# Step 7: Invoke the endpoint
+      # Step 7: Invoke the endpoint for multiple examples
       - name: Invoke the endpoint for example 1
         run: |
           # Invoke the endpoint to validate deployment
