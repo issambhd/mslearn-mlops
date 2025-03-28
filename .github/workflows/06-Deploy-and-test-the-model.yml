@@ -51,7 +51,7 @@ jobs:
             --name my-deployment \
             --endpoint mslearn-mlops-my-online-endpoint \
             -f endpoints/online/deployment.yml \
-            --resource-group $resource_group \
+            --resource-group rg-for-mslearn-mlops \
             --workspace-name ws2-mslearn-mlops-prod \
             --all-traffic
 
