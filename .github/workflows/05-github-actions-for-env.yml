@@ -1,4 +1,4 @@
-name: Manually trigger an Azure Machine Learning job to dev env and prod env
+name: Azure ML job to DEV and PROD env
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   job1:
-    name: train the model in the dev environment using the diabetes-dev-folder dataset as input
+    name: train model in dev env
     runs-on: ubuntu-latest
     environment:
       name: dev_env
@@ -27,13 +27,13 @@ jobs:
     - name: Trigger Azure Machine Learning job
       run: |
        az ml job create --file src/job-dev.yml \
-                        --resource-group rg-for-mslearn-mlops \
+                        --resource-group ${{ secrets.RESOURCE_GROUP }} \
                         --workspace-name ${{ secrets.WORKSPACE_NAME }} \
                         --set compute=${{ secrets.COMPUTE_NAME }} \
                         --stream
 
   job2:
-    name:  train the model in the prod environment, using the diabetes-prod-folder data asset as input
+    name:  train model in prod env
     needs: job1
     runs-on: ubuntu-latest
     environment:
@@ -50,14 +50,11 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
-
-    - name: set current directory
-      run: cd src
       
     - name: Trigger Azure Machine Learning job
       run: |
         az ml job create --file src/job-prod.yml \
-                         --resource-group rg-for-mslearn-mlops \
+                         --resource-group ${{ secrets.RESOURCE_GROUP }} \
                          --workspace-name ${{ secrets.WORKSPACE_NAME }} \
                          --set compute=${{ secrets.COMPUTE_NAME }} \
                          --stream
