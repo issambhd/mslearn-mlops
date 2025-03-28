@@ -6,17 +6,5 @@ model:
   version: 1
   path: azureml://subscriptions/c27de983-f245-4843-96f3-7d98d93f46d4/resourceGroups/rg-for-mslearn-mlops/workspaces/ws2-mslearn-mlops-prod/datastores/workspaceartifactstore/paths/ExperimentRun/dcid.shy_actor_41mljb15k0/model
   type: mlflow_model
-instance_type: Standard_D2as_v4
-instance_count: 3
-environment_variables:
-  AZUREML_MODEL_DIR: /mnt/models
-  PYTHON_VERSION: "3.7.16"
-
-
-model:
-  name: Production-Diabetes-Model
-  version: 1
-  path: sklearn-diabetes/model
-  type: mlflow_model
 instance_type: Standard_DS3_v2
 instance_count: 1
