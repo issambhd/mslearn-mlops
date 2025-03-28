@@ -6,5 +6,5 @@ model:
   version: 1
   path: azureml://subscriptions/c27de983-f245-4843-96f3-7d98d93f46d4/resourceGroups/rg-for-mslearn-mlops/workspaces/ws2-mslearn-mlops-prod/datastores/workspaceartifactstore/paths/ExperimentRun/dcid.shy_actor_41mljb15k0/model
   type: mlflow_model
-instance_type: Standard_E2s_v3
+instance_type: Standard_DS3_v2
 instance_count: 3
