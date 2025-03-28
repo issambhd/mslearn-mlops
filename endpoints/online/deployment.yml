@@ -9,3 +9,4 @@ instance_type: Standard_D2as_v4
 instance_count: 3
 environment_variables:
   AZUREML_MODEL_DIR: /mnt/models
+  PYTHON_VERSION: "3.7.16"
