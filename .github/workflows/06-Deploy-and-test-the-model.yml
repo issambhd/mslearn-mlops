@@ -73,3 +73,45 @@ jobs:
             --resource-group ${{ secrets.RESOURCE_GROUP }} \
             --workspace-name ${{ secrets.WORKSPACE_NAME }} \
             --request-file endpoints/online/sample-request.json || { echo 'Endpoint invocation failed'; exit 1; }
+
+
+# Step 7: Invoke the endpoint
+      - name: Invoke the endpoint for example 1
+        run: |
+          # Invoke the endpoint to validate deployment
+          echo "Invoking the endpoint..."
+          az ml online-endpoint invoke \
+            --name my-endpoint-mlopsibe \
+            --resource-group ${{ secrets.RESOURCE_GROUP }} \
+            --workspace-name ${{ secrets.WORKSPACE_NAME }} \
+            --request-file endpoints/online/sample-request-1.json || { echo 'Endpoint invocation failed'; exit 1; }
+
+      - name: Invoke the endpoint for example 2
+        run: |
+          # Invoke the endpoint to validate deployment
+          echo "Invoking the endpoint..."
+          az ml online-endpoint invoke \
+            --name my-endpoint-mlopsibe \
+            --resource-group ${{ secrets.RESOURCE_GROUP }} \
+            --workspace-name ${{ secrets.WORKSPACE_NAME }} \
+            --request-file endpoints/online/sample-request-2.json || { echo 'Endpoint invocation failed'; exit 1; }
+
+      - name: Invoke the endpoint for example 3
+        run: |
+          # Invoke the endpoint to validate deployment
+          echo "Invoking the endpoint..."
+          az ml online-endpoint invoke \
+            --name my-endpoint-mlopsibe \
+            --resource-group ${{ secrets.RESOURCE_GROUP }} \
+            --workspace-name ${{ secrets.WORKSPACE_NAME }} \
+            --request-file endpoints/online/sample-request-3.json || { echo 'Endpoint invocation failed'; exit 1; }
+
+      - name: Invoke the endpoint for example 4
+        run: |
+          # Invoke the endpoint to validate deployment
+          echo "Invoking the endpoint..."
+          az ml online-endpoint invoke \
+            --name my-endpoint-mlopsibe \
+            --resource-group ${{ secrets.RESOURCE_GROUP }} \
+            --workspace-name ${{ secrets.WORKSPACE_NAME }} \
+            --request-file endpoints/online/sample-request-4.json || { echo 'Endpoint invocation failed'; exit 1; }
