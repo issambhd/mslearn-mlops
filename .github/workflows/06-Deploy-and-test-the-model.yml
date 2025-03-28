@@ -1,9 +1,7 @@
-name: Deploy Model to Endpoint
+name: Create Endpoint and Deploy Model
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   deploy-model:
@@ -14,78 +12,64 @@ jobs:
     steps:
       # Step 1: Check out the repository
       - name: Checkout Repository
-        uses: actions/checkout@v2 # Pin to v2 for stability
+        uses: actions/checkout@main
 
-      # Step 2: Set up Python
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.8'
-
-      # Step 3: Install Azure ML CLI
-      - name: Install Azure CLI Python packages
-        run: |
-          pip install azure-ai-ml azure-identity
-
-      # Step 4: Install the Azure ML CLI extension
+      # Step 2: Install the Azure ML CLI extension
       - name: Install az ml extension
         run: az extension add -n ml -y
 
-      # Step 5: Azure login
+      # Step 3: Azure login
       - name: Azure login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # Step 6: Deploy Model to Endpoint
-      - name: Deploy Model to Endpoint
+      # Step 4: Create a managed online endpoint
+      - name: Create a managed online endpoint
         run: |
-          # Set variables
-          resource_group="rg-for-mslearn-mlops"
-          workspace_name="ws2-mslearn-mlops-prod" 
-          endpoint_name="mslearn-mlops-my-online-endpoint"
-          deployment_name="mslearn-mlops-my-deployment"
-          model_name="model-from-job-output-manually-registered"
-          model_version="1"
-
           # Check if endpoint exists and create or update accordingly
-          if az ml online-endpoint show --name $endpoint_name --resource-group $resource_group --workspace-name $workspace_name; then
-            az ml online-endpoint update --name $endpoint_name -f endpoints/online/endpoint.yml --resource-group $resource_group --workspace-name $workspace_name
+          if az ml online-endpoint show --name mslearn-mlops-my-online-endpoint --resource-group $resource_group --workspace-name $workspace_name; then
+            az ml online-endpoint update --name mslearn-mlops-my-online-endpoint -f endpoints/online/endpoint.yml --resource-group $resource_group --workspace-name $workspace_name
           else
-            az ml online-endpoint create --name $endpoint_name -f endpoints/online/endpoint.yml --resource-group $resource_group --workspace-name $workspace_name
+            az ml online-endpoint create --name mslearn-mlops-my-online-endpoint -f endpoints/online/endpoint.yml --resource-group $resource_group --workspace-name $workspace_name
           fi
-
-          # Log model details
-          echo "Model details:"
-          #az ml model show --name $model_name --version $model_version --resource-group $resource_group --workspace-name $workspace_name
-          az ml model show --name model-from-job-output-manually-registered --version 1 --resource-group rg-for-mslearn-mlops --workspace-name ws2-mslearn-mlops-prod
 
           # Endpoint details
           echo "Endpoint details:"
           az ml online-endpoint show --name mslearn-mlops-my-online-endpoint --resource-group rg-for-mslearn-mlops --workspace-name ws2-mslearn-mlops-prod
-          
+
+      # Step 5: Create the deployment
+      - name: Create the deployment
+        run: |
+          # Log model details
+          echo "Model details:"
+          az ml model show --name model-from-job-output-manually-registered --version 1 --resource-group rg-for-mslearn-mlops --workspace-name ws2-mslearn-mlops-prod
+
           # Create the deployment
           echo "Creating deployment..."
           az ml online-deployment create \
-            --name $deployment_name \
-            --endpoint-name $endpoint_name \
+            --name my-deployment \
+            --endpoint mslearn-mlops-my-online-endpoint \
             -f endpoints/online/deployment.yml \
             --resource-group $resource_group \
-            --workspace-name $workspace_name \
+            --workspace-name ws2-mslearn-mlops-prod \
             --all-traffic
 
           # Verify the deployment
           echo "Verifying the deployment..."
           az ml online-deployment show \
             --name $deployment_name \
-            --endpoint-name $endpoint_name \
-            --resource-group $resource_group \
-            --workspace-name $workspace_name
+            --endpoint mslearn-mlops-my-online-endpointe \
+            --resource-group rg-for-mslearn-mlops \
+            --workspace-name ws2-mslearn-mlops-prod
 
+      # Step 6: Invoke the endpoint
+      - name: Invoke the endpoint
+        run: |
           # Invoke the endpoint to validate deployment
           echo "Invoking the endpoint..."
           az ml online-endpoint invoke \
-            --name $endpoint_name \
-            --resource-group $resource_group \
-            --workspace-name $workspace_name \
+            --name mslearn-mlops-my-online-endpoint \
+            --resource-group rg-for-mslearn-mlops \
+            --workspace-name ws2-mslearn-mlops-prod \
             --request-file endpoints/online/sample-request.json || { echo 'Endpoint invocation failed'; exit 1; }
